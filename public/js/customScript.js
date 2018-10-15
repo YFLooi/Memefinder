@@ -63,7 +63,7 @@ function srctoimg(id){
 
 //Opens and closes #guide
 function openGuide() {
-    document.getElementById("myGuide").style.width = "350px";
+    document.getElementById("myGuide").style.width = "320px";
 }
 function closeGuide() {
     document.getElementById("myGuide").style.width = "0";
