@@ -5,7 +5,7 @@ const app = express();
 /*Required to work with Azure hosting*/
 const port = process.env.PORT || 8000;
 
-app.use(express.static("public"));
+app.use(express.static(__dirname+'/public'));
 
 //GET-s the default.html as the main page to which the app returns to
 app.get('/', function(req,res){
