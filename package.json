@@ -1,11 +1,16 @@
 {
   "name": "BingImageSearchApp",
   "version": "1.0.0",
-  "description": "A single-page web app that displays images from the Bing Image Search API ",
-  "main": "app.js",
+  "engines": {
+    "node": "8.10.0",
+    "npm": "5.6.0"
+  },
+  "description": "A single-page web app that displays humorous images from the Bing Image Search API ",
+  "main": "server.js",
   "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "Microsoft Corporation",
   "dependencies": {
