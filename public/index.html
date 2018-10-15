@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<!-- the above Mark of the Web lets IE run this page in the Internet security zone,
+     avoiding the permission prompt for running active content such as JavaScript -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"
+    http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="./icons/tabIcon.ico" />
+    <title>Memefinder</title>
+    <base target="_blank">
+
+<link rel="stylesheet" href="./css/style.css">    
+<script src="js/jquery3.3.1.js"></script> 
+<script src="js/script.js"></script> 
+<script src="js/customScript.js"></script> 
+</head>
+<body onload="document.forms.bing.query.focus();">
+<!--onsubmit runs when the enter key is hit!-->
+
+<div class="header">
+    <h1>MEMEFINDER: Put the funny in!</h1>
+</div>
+
+<div class="row1">
+<div class="col-1">
+    <form name="bing" onsubmit="return newBingImageSearch(this)">
+        <div id="query"><!-- query controls including search field and options -->    
+            <p>
+                <input type="text" name="query" id="term" placeholder="Search memes and GIFs" autocomplete=off>
+                <button id="termButton" onclick="event.keyCode === 13">&#8981;</button> <!--event.keyCode === 13 means 'Press Enter button'-->
+            </p> 
+            <p>
+            File type
+                <select name="type">
+                    <option value="" selected>Any</option>
+                    <option value="AnimatedGif">Only GIFs</option>
+                </select>
+
+                &nbsp;&nbsp;&nbsp;Freshness
+                <select name="when">
+                    <option value="" selected>All time</option>
+                    <option value="month">Past month</option>
+                    <option value="year">Past year</option>
+                </select>
+
+                &nbsp;&nbsp;&nbsp;<input type=checkbox id="safe" name="safe" value="on" checked><label for="safe">SafeSearch</label>
+            </p>
+            <br>
+            <h2>Hover to check source image and play GIFs. Click to copy</h2>
+                
+            <!-- these hidden fields control paging -->
+            <input type=hidden name="count" value="20"> <!--Sets number of results per page-->
+            <!--Prevents duplicate results. See 'paging': https://docs.microsoft.com/en-us/azure/cognitive-services/bing-image-search/paging-images -->
+            <input type=hidden name="offset" value="0">
+            <input type=hidden name="nextoffset" value="">    
+            
+            <input type=hidden name="stack" value="[]">
+        </div>
+    </form> <!--Sets up query URL for Bing search-->
+
+    <div id="error">
+        <h2>Error</h2>
+        <div id="_error"></div>
+    </div>
+</div>
+
+<div class="col-2">
+    <div id="sidebox"> <!--Displays items in same row as search bar-->
+        <p><I>Powered by Microsoft Cognitive Services</I></p>
+        <div id="sideboxButtons">
+            <p>
+                <a class="guideButton" onclick="openGuide()">Guide</a> <!--Note: DOES NOT accept links <a>!-->
+                <div id="myGuide" class="guide">
+                    <span class="guideClosebtn" style="cursor:pointer" onclick="closeGuide()">[Close &times;]</span><br>
+                    <br>
+                    Welcome to the 1st meme finder that uploads to any site! =D<br>
+                    Note: Image load time varies by source <br>
+                    <br>
+                    <u>On PC:</u><br>
+                    1. Find memes using the search box. Set for images or GIFs in 'File Type' <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<img src="./icons/guide/guide1.jpg" display=block margin-left="30%"  width="30%" height="12%"/><br>
+                    2. Click to copy link to meme <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<img src="./icons/guide/guide2.jpg" width="40%" height="15%"/><br>
+                    3. Go back to the upload site. Click on the image upload button<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<img src="./icons/guide/guide3.jpg" width="40%" height="10%"/><br>
+                    4. In the popup, Paste the copied link in 'File name'<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<img src="./icons/guide/guide4.jpg" width="95%" height="5%"/><br>
+                    5. Finally, click open and wait. You have just posted a meme! <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<img src="./icons/guide/guide5.gif" width="40%" height="12%"/><br>
+                    <br>
+                    <u>On mobile:</u><br>
+                    Press and hold a meme then 'Save Image'. Upload.
+                </div>
+            </p>
+            <p>
+                <a class="sidenavButton" onclick="openNav()">Quick Search</a>
+                <div id="mySidenav" class="sidenav">
+                    <span class="sidenavClosebtn" style="cursor:pointer" onclick="closeNav()">Close &times;</span>
+                    <a href="#" onclick="closeNav();return quickSearch('Marvel & DC')">Marvel & DC</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Overwatch')">Overwatch</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Star Wars')">Star Wars</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Donald Trump')">Donald Trump</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Kim Jong-un')">Kim Jong-un</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Pepe the Frog')">Pepe the Frog</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Come At Me Bro')">Come At Me Bro</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Fabulous')">Fabulous</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Thumbs Up')">Thumbs Up</a>
+                    <a href="#" onclick="closeNav();return quickSearch('WTF')">WTF</a>
+                    <a href="#" onclick="closeNav();return quickSearch('LOL')">LOL</a>
+                    <a href="#" onclick="closeNav();return quickSearch('OMG')">OMG</a>
+                    <a href="#" onclick="closeNav();return quickSearch('I Don’t Care')">I Don’t Care</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Yes')">Yes</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Nope')">Nope</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Mind Blown')">Mind Blown</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Right In The Feels')">Right In The Feels</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Deal with it')">Deal with it</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Facepalm')">Facepalm</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Thank You')">Thank You</a>
+                    <a href="#" onclick="closeNav();return quickSearch('You’re Awesome')">You’re Awesome!</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Haters Gonna Hate')">Haters Gonna Hate</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Party Hard')">Party Hard</a>
+                    <a href="#" onclick="closeNav();return quickSearch('That’s Racist')">That’s Racist</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Fail')">Fail</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Birthday/Celebrate')">Birthday/Celebrate</a>
+                    <a href="#" onclick="closeNav();return quickSearch('Rage Faces')">Rage Faces</a> 
+                </div>   
+            </p>
+        </div>
+    </div>
+</div>
+</div> <!--For row including #query and #sidebox-->
+
+<div class="row2">
+<div class="col-3">
+    <div id="paging1">
+        <div id="_paging1"></div>
+    </div>
+
+    <div id="noresults">
+        <div id="_noresults"><i>Search results appear here</i></div>
+    </div>
+
+    <div id="results">
+        <div id="_results"></div>
+    </div>
+
+
+    <div id="paging2">
+        <div id="_paging2"></div>
+    </div>
+
+    <div id="popup"><b>Link Copied!</b></div>
+</div>
+</div>
+
+<script>
+/*
+<div type=hidden id="json">
+    <h3><a href="#" onclick="return toggleDisplay('_json')">JSON</a></h3>
+    <div id="_json" style="display: none"></div>
+</div>
+
+<div type=hidden id="http">
+    <h3><a href="#" onclick="return toggleDisplay('_http')">HTTP</a></h3>
+    <div id="_http" style="display: none"></div>
+</div>
+*/
+</script>
+
+</body>
+</html>
