@@ -220,7 +220,6 @@ function handleBingResponse() {
 
 // perform a search given query, options string, and API key
 function bingImageSearch(query, options, key) {
-
     // scroll to top of window
     window.scrollTo(0, 0);
     if (!query.trim().length) return false;     // empty query, do nothing
@@ -266,7 +265,6 @@ function bingImageSearch(query, options, key) {
 
 // build query options from the HTML form
 function bingSearchOptions(form) {
-
     var options = [];
     options.push("mkt=" + "en-US"); //Specifies demographics. Ex: en-GB (UK), de-DE (Germany)
     options.push("SafeSearch=" + (form.safe.checked ? "strict" : "off"));
@@ -274,6 +272,7 @@ function bingSearchOptions(form) {
     if (form.type.value) options.push("imageType=" + form.type.value);
     options.push("count=" + form.count.value);
     options.push("offset=" + form.offset.value);
+    console.log(options.join("&"));
     return options.join("&");
 }
 
@@ -298,6 +297,7 @@ function toggleDisplay(id) {
 function quickSearch(query) {
     var bing = document.forms.bing;
     bing.query.value = query;
+    console.log("Bing variable contents: "+bing.query.value+", "+bing.type.value+", "+bing.when.value+", "+bing.safe.value);
     return newBingImageSearch(bing);
 }
 
@@ -319,7 +319,18 @@ function renderPagingLinks(results) {
 function doNextSearchPage() {
 
     var bing = document.forms.bing;
-    var query = bing.query.value;
+    console.log("Bing variable contents: "+bing.query.value+", "+bing.type.value+", "+bing.when.value+", "+bing.safe.value);
+    
+    function queryCheck(query){
+        if(query===""){
+            return "site:giphy.com/";    
+        } else {
+            return bing.query.value;
+        }
+    };
+    var query = queryCheck(bing.query.value);
+
+    console.log("Query value: "+query);
     var offset = parseInt(bing.offset.value, 10);
     var stack = JSON.parse(bing.stack.value);
     stack.push(parseInt(bing.offset.value, 10));
@@ -331,14 +342,28 @@ function doNextSearchPage() {
 // go to the previous page (used by previous page link)
 function doPrevSearchPage() {
 
+    //Parses the name=Bing form in the HTML
     var bing = document.forms.bing;
-    var query = bing.query.value;
+
+    function queryCheck(query){
+        if(query===""){
+            return "site:giphy.com/";    
+        } else {
+            return bing.query.value;
+        }
+    };
+    var query = queryCheck(bing.query.value);
+    console.log("Query value: "+query);
     var stack = JSON.parse(bing.stack.value);
     if (stack.length) {
         var offset = stack.pop();
         var count = parseInt(bing.count.value, 10);
         bing.stack.value = JSON.stringify(stack);
         bing.offset.value = offset;
+        console.log("Page count: "+count);
+        console.log("Bing.stack.value: "+bing.stack.value);
+        console.log("Bing.offset.value: "+bing.offset.value);
+
         return bingImageSearch(query, bingSearchOptions(bing), getSubscriptionKey());
     }
     alert("You're already at the beginning!");

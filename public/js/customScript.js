@@ -52,7 +52,6 @@ function copyImageLocation(index) {
 function srctogif(id){
     var image = id.removeAttribute("src");
     var source = id.getAttribute("href");
-    console.log("GIF load triggered at: "+id+" from link: "+source);
     var createSource = id.setAttribute('src', source);
 }
 function srctoimg(id){

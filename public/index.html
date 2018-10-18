@@ -14,16 +14,34 @@
 <script src="js/jquery3.3.1.js"></script> 
 <script src="js/script.js"></script> 
 <script src="js/customScript.js"></script> 
-</head>
-<body onload="document.forms.bing.query.focus();">
-<!--onsubmit runs when the enter key is hit!-->
 
+<script type="text/javascript">
+    window.onload = function(){
+        //On page refresh, resets <select> boxes for File Type and Freshness to 1st option
+        $(document).ready(function() {
+            $('#type').find('option:first').attr('selected','selected');
+            $('#when').find('option:first').attr('selected','selected');
+        });
+        //On pg refresh, prevents results from being stuck on last search's pgXX by resetting to pg zero 
+        bing.offset.value = "0";
+
+        //3 parameters: query, search options, and subscription key
+        //return quickSearch('Latest reaction GIFs')
+        bingImageSearch("site:giphy.com/", "mkt=en-US&SafeSearch=strict&freshness=month&count=20&offset=0", "a510b937dbfb4e62841213b8966533ec"); 
+
+        document.forms.bing.query.focus(); //In <body> tag as onload=document.forms.bing.query.focus(). Clashes with this script.
+    };
+</script>
+</head>
+
+<body>
 <div class="header">
     <h1>MEMEFINDER: Put the funny in!</h1>
 </div>
 
 <div class="row1">
 <div class="col-1">
+    <!--onsubmit runs when the enter key is hit!-->
     <form name="bing" onsubmit="return newBingImageSearch(this)">
         <div id="query"><!-- query controls including search field and options -->    
             <p>
@@ -32,16 +50,16 @@
             </p> 
             <p>
             File type
-                <select name="type">
-                    <option value="" selected>Any</option>
+                <select name="type" id="type">
+                    <option value="">Any</option>
                     <option value="AnimatedGif">Only GIFs</option>
                 </select>
 
                 &nbsp;&nbsp;&nbsp;Freshness
-                <select name="when">
-                    <option value="" selected>All time</option>
+                <select name="when" id="when">
                     <option value="month">Past month</option>
                     <option value="year">Past year</option>
+                    <option value="">All time</option>
                 </select>
 
                 &nbsp;&nbsp;&nbsp;<input type=checkbox id="safe" name="safe" value="on" checked><label for="safe">SafeSearch</label>
@@ -111,6 +129,8 @@
                 <a class="sidenavButton" onclick="openNav()">Quick Search</a>
                 <div id="mySidenav" class="sidenav">
                     <span class="sidenavClosebtn" style="cursor:pointer" onclick="closeNav()">Close &times;</span>
+                    <a href="#" onclick="closeNav();return quickSearch('Reaction GIFs')">Reaction GIFs</a>             
+                    <a href="#" onclick="closeNav();return quickSearch('Ragefaces')">Ragefaces</a>
                     <a href="#" onclick="closeNav();return quickSearch('Marvel & DC')">Marvel & DC</a>
                     <a href="#" onclick="closeNav();return quickSearch('Overwatch')">Overwatch</a>
                     <a href="#" onclick="closeNav();return quickSearch('Star Wars')">Star Wars</a>

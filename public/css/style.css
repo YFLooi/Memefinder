@@ -12,14 +12,14 @@ h3 {font-size: 14px; clear: left;}
 
 .header {
     /*<body> has default margins. Remove them to properly spill out banner and prevent whitespace*/
-    margin-left: -0.8%;
-    margin-right: -0.8%;
-    margin-top:-0.8%;
+    margin-left: -1%;
+    margin-right: -1%;
+    margin-top:-1%;
 
 	background-color: black;
-	background: url("../icons/banner.jpg") no-repeat center center;
-	width:auto;
-    max-height:5%;
+    background: url("../icons/banner.jpg") no-repeat center center;
+    background-size: auto auto;
+	width:102%;
 	overflow-x: hidden;
 }
 
