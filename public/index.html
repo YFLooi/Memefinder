@@ -24,6 +24,8 @@
         });
         //On pg refresh, prevents results from being stuck on last search's pgXX by resetting to pg zero 
         bing.offset.value = "0";
+        //On pg refresh, clears stack array to prevent having last stored stack (page) code to 'back' into 
+        bing.stack.value = "[]";
 
         //3 parameters: query, search options, and subscription key
         //return quickSearch('Latest reaction GIFs')

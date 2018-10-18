@@ -333,6 +333,7 @@ function doNextSearchPage() {
     console.log("Query value: "+query);
     var offset = parseInt(bing.offset.value, 10);
     var stack = JSON.parse(bing.stack.value);
+    console.log("Next stack value:"+stack);
     stack.push(parseInt(bing.offset.value, 10));
     bing.stack.value = JSON.stringify(stack);
     bing.offset.value = bing.nextoffset.value;
@@ -355,14 +356,12 @@ function doPrevSearchPage() {
     var query = queryCheck(bing.query.value);
     console.log("Query value: "+query);
     var stack = JSON.parse(bing.stack.value);
+    console.log("Previous stack value:"+stack);
     if (stack.length) {
         var offset = stack.pop();
         var count = parseInt(bing.count.value, 10);
         bing.stack.value = JSON.stringify(stack);
         bing.offset.value = offset;
-        console.log("Page count: "+count);
-        console.log("Bing.stack.value: "+bing.stack.value);
-        console.log("Bing.offset.value: "+bing.offset.value);
 
         return bingImageSearch(query, bingSearchOptions(bing), getSubscriptionKey());
     }
