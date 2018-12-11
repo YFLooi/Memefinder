@@ -90,16 +90,16 @@ function hideDivs() {
 // render functions for various types of search results
 searchItemRenderers = { 
     images: function (item, index, count) {
-        var height = 120;
-        var width = Math.max(Math.round(height * item.thumbnail.width / item.thumbnail.height), 120);
-      
+        //Sets the size of the thumbnails that pop up
+        var screenwidth = screen.width;
+        var height = screenwidth*0.4;
+        var width = screenwidth*0.45;
+        
         var html = [];
         if (index === 0) html.push("<p class='images'>");  
         var title = escape(item.name) + "\n" + getHost(item.hostPageDisplayUrl); 
-        html.push("<p class='images' style='max-width: " + width + "px'>");
-        html.push("<img src='"+item.thumbnailUrl+ "&h=" + height + "&w=" + width +"' height=" 
-        + (height+10) + " width=" + (width+10) +" id='imgItem"+index+"' href="+item.contentUrl+
-        " href2="+item.thumbnailUrl+" onclick='copyImageLocation("+ index +")' onmouseover='srctogif(this)' onmouseout='srctoimg(this)' >");
+        html.push("<p class='images'>");
+        html.push("<img src="+item.thumbnailUrl+" id='imgItem"+index+"' href="+item.contentUrl+" href2="+item.thumbnailUrl+" onclick='copyImageLocation("+ index +")' onmouseover='srctogif(this)' onmouseout='srctoimg(this)' >");
         return html.join("");
     },
     relatedSearches: function(item) {
@@ -272,7 +272,6 @@ function bingSearchOptions(form) {
     if (form.type.value) options.push("imageType=" + form.type.value);
     options.push("count=" + form.count.value);
     options.push("offset=" + form.offset.value);
-    console.log(options.join("&"));
     return options.join("&");
 }
 
@@ -295,9 +294,9 @@ function toggleDisplay(id) {
 //Inserts parameter of quicksearch links into search bar
 //Originally 'relatedSearch' perform a related search (used by related search links)
 function quickSearch(query) {
+    //Gets contents of <form> with name 'bing'
     var bing = document.forms.bing;
     bing.query.value = query;
-    console.log("Bing variable contents: "+bing.query.value+", "+bing.type.value+", "+bing.when.value+", "+bing.safe.value);
     return newBingImageSearch(bing);
 }
 
@@ -317,7 +316,6 @@ function renderPagingLinks(results) {
 
 // go to the next page (used by next page link)
 function doNextSearchPage() {
-
     var bing = document.forms.bing;
     console.log("Bing variable contents: "+bing.query.value+", "+bing.type.value+", "+bing.when.value+", "+bing.safe.value);
     
@@ -330,10 +328,8 @@ function doNextSearchPage() {
     };
     var query = queryCheck(bing.query.value);
 
-    console.log("Query value: "+query);
     var offset = parseInt(bing.offset.value, 10);
     var stack = JSON.parse(bing.stack.value);
-    console.log("Next stack value:"+stack);
     stack.push(parseInt(bing.offset.value, 10));
     bing.stack.value = JSON.stringify(stack);
     bing.offset.value = bing.nextoffset.value;
@@ -354,9 +350,7 @@ function doPrevSearchPage() {
         }
     };
     var query = queryCheck(bing.query.value);
-    console.log("Query value: "+query);
     var stack = JSON.parse(bing.stack.value);
-    console.log("Previous stack value:"+stack);
     if (stack.length) {
         var offset = stack.pop();
         var count = parseInt(bing.count.value, 10);

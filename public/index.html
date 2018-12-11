@@ -1,208 +1,209 @@
 <!DOCTYPE html>
-<!-- saved from url=(0014)about:internet -->
-<!-- the above Mark of the Web lets IE run this page in the Internet security zone,
-     avoiding the permission prompt for running active content such as JavaScript -->
 <html lang="en">
-<head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"
-    http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="utf-8">
+
+    <!--Determines how webpage reacts to screen size change-->
+    <!--https://stackoverflow.com/questions/25211090/how-to-auto-adjust-the-div-size-for-all-mobile-tablet-display-formats-->
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, shrink-to-fit=yes"/>
+    <meta name="theme-color" content="#000000">
+
+    <link rel="manifest" href="./manifest.json">
+
+    <!--Sets the tab icon-->
     <link rel="shortcut icon" href="./icons/tabIcon.ico" />
     <title>Memefinder</title>
     <base target="_blank">
 
-<link rel="stylesheet" href="./css/style.css">    
-<script src="js/jquery3.3.1.js"></script> 
-<script src="js/script.js"></script> 
-<script src="js/customScript.js"></script> 
+    <link rel="stylesheet" href="./css/style.css">    
+    <script src="./js/jquery3.3.1.js"></script> 
+    <script src="./js/script.js"></script> 
+    <script src="./js/customScript.js"></script> 
 
-<script type="text/javascript">
-    window.onload = function(){
-        //On page refresh, resets <select> boxes for File Type and Freshness to 1st option
-        $(document).ready(function() {
-            $('#type').find('option:first').attr('selected','selected');
-            $('#when').find('option:first').attr('selected','selected');
-        });
-        //On pg refresh, prevents results from being stuck on last search's pgXX by resetting to pg zero 
-        bing.offset.value = "0";
-        //On pg refresh, clears stack array to prevent having last stored stack (page) code to 'back' into 
-        bing.stack.value = "[]";
+    <script type="text/javascript">
+      window.onload = function(){
+          //On page refresh, resets <select> boxes for File Type and Freshness to 1st option
+          $(document).ready(function() {
+              $('#type').find('option:first').attr('selected','selected');
+              $('#when').find('option:first').attr('selected','selected');
+          });
+          //On pg refresh, prevents results from being stuck on last search's pgXX by resetting to pg zero 
+          bing.offset.value = "0";
+          //On pg refresh, clears stack array to prevent having last stored stack (page) code to 'back' into 
+          bing.stack.value = "[]";
+  
+          //3 parameters: query, search options, and subscription key
+          //return quickSearch('Latest reaction GIFs')
+          bingImageSearch("site:giphy.com/", "mkt=en-US&SafeSearch=strict&freshness=month&count=20&offset=0", "a510b937dbfb4e62841213b8966533ec"); 
+  
+          document.forms.bing.query.focus(); //In <body> tag as onload=document.forms.bing.query.focus(). Clashes with this script.
+      };
+    </script>
+  </head>
 
-        //3 parameters: query, search options, and subscription key
-        //return quickSearch('Latest reaction GIFs')
-        bingImageSearch("site:giphy.com/", "mkt=en-US&SafeSearch=strict&freshness=month&count=20&offset=0", "a510b937dbfb4e62841213b8966533ec"); 
+  <body>
+    <div class="header">
+        <h1>MEMEFINDER: Put the funny in!</h1>
 
-        document.forms.bing.query.focus(); //In <body> tag as onload=document.forms.bing.query.focus(). Clashes with this script.
-    };
-</script>
-</head>
-
-<body>
-<div class="header">
-    <h1>MEMEFINDER: Put the funny in!</h1>
-</div>
-
-<div class="row1">
-<div class="col-1">
-    <!--onsubmit runs when the enter key is hit!-->
-    <form name="bing" onsubmit="return newBingImageSearch(this)">
-        <div id="query"><!-- query controls including search field and options -->    
-            <p>
-                <input type="text" name="query" id="term" placeholder="Search memes and GIFs" autocomplete=off>
-                <button id="termButton" onclick="event.keyCode === 13">&#8981;</button> <!--event.keyCode === 13 means 'Press Enter button'-->
-            </p> 
-            <p>
-            File type
-                <select name="type" id="type">
-                    <option value="">Any</option>
-                    <option value="AnimatedGif">Only GIFs</option>
-                </select>
-
-                &nbsp;&nbsp;&nbsp;Freshness
-                <select name="when" id="when">
-                    <option value="month">Past month</option>
-                    <option value="year">Past year</option>
-                    <option value="">All time</option>
-                </select>
-
-                &nbsp;&nbsp;&nbsp;<input type=checkbox id="safe" name="safe" value="on" checked><label for="safe">SafeSearch</label>
-            </p>
-            <br>
-            <h2>Hover to check source image and play GIFs. Click to copy</h2>
-                
-            <!-- these hidden fields control paging -->
-            <input type=hidden name="count" value="20"> <!--Sets number of results per page-->
-            <!--Prevents duplicate results. See 'paging': https://docs.microsoft.com/en-us/azure/cognitive-services/bing-image-search/paging-images -->
-            <input type=hidden name="offset" value="0">
-            <input type=hidden name="nextoffset" value="">    
-            
-            <input type=hidden name="stack" value="[]">
-        </div>
-    </form> <!--Sets up query URL for Bing search-->
-
-    <div id="error">
-        <h2>Error</h2>
-        <div id="_error"></div>
-    </div>
-</div>
-
-<div class="col-2">
-    <div id="sidebox"> <!--Displays items in same row as search bar-->
-        <p><I>Powered by Microsoft Cognitive Services</I></p>
-        <div id="sideboxButtons">
-            <p>
-                <a class="guideButton" onclick="openGuide()">Guide</a> <!--Note: DOES NOT accept links <a>!-->
-                <div id="myGuide" class="guide">
-                    <p>
-                        <span class="guideClosebtn" style="cursor:pointer" onclick="closeGuide()">[Close &times;]</span><br>
-                        Welcome to the 1st Internet-wide meme finder!<br>
-                        Note: Image load time varies by source <br>
-                    </p>
-                    <p>
-                        <u>On PC:</u>
-                        <ol>
-                            <li>Find memes using the search box. Set for images or GIFs in 'File Type'<br>
-                                <img src="./icons/guide/guide1.jpg" display=block margin-left="30%"  width="30%" height="12%"/>
-                            </li>
-                            <li>Click to copy link to meme<br>
-                                <img src="./icons/guide/guide2.jpg" width="40%" height="auto"/>
-                            </li>
-                            <li>
-                                Go back to the upload site. Click on the image upload button<br>
-                                <img src="./icons/guide/guide3.jpg" width="40%" height="auto"/>
-                            </li>
-                            <li>
-                                In the popup, Paste the copied link in 'File name'<br>
-                                <img src="./icons/guide/guide4.jpg" width="95%" height="auto"/>
-                            </li>
-                            <li>
-                                Finally, click open and wait. You have just posted a meme! <br>
-                                <img src="./icons/guide/guide5.gif" width="40%" height="auto"/>
-                            </li>
-                        </ol> 
-                    </p>
-                    <p>
-                        <u>On mobile:</u><br><br>
-                        Search as on PC. Press and hold a meme and click 'Save Image'. Upload.<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./icons/guide/guide6.png" width="40%" height="auto"/>
-                    </p>
-                </div>
-            </p>
-            <p>
-                <a class="sidenavButton" onclick="openNav()">Categories</a>
-                <div id="mySidenav" class="sidenav">
-                    <span class="sidenavClosebtn" style="cursor:pointer" onclick="closeNav()">Close &times;</span>
-                    <a href="#" onclick="closeNav();return quickSearch('Reaction GIFs')">Reaction GIFs</a>             
-                    <a href="#" onclick="closeNav();return quickSearch('Ragefaces')">Ragefaces</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Marvel & DC')">Marvel & DC</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Overwatch')">Overwatch</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Star Wars')">Star Wars</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Donald Trump')">Donald Trump</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Kim Jong-un')">Kim Jong-un</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Pepe the Frog')">Pepe the Frog</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Come At Me Bro')">Come At Me Bro</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Fabulous')">Fabulous</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Thumbs Up')">Thumbs Up</a>
-                    <a href="#" onclick="closeNav();return quickSearch('WTF')">WTF</a>
-                    <a href="#" onclick="closeNav();return quickSearch('LOL')">LOL</a>
-                    <a href="#" onclick="closeNav();return quickSearch('OMG')">OMG</a>
-                    <a href="#" onclick="closeNav();return quickSearch('I Don’t Care')">I Don’t Care</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Yes')">Yes</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Nope')">Nope</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Mind Blown')">Mind Blown</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Right In The Feels')">Right In The Feels</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Deal with it')">Deal with it</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Facepalm')">Facepalm</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Thank You')">Thank You</a>
-                    <a href="#" onclick="closeNav();return quickSearch('You’re Awesome')">You’re Awesome!</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Haters Gonna Hate')">Haters Gonna Hate</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Party Hard')">Party Hard</a>
-                    <a href="#" onclick="closeNav();return quickSearch('That’s Racist')">That’s Racist</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Fail')">Fail</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Birthday/Celebrate')">Birthday/Celebrate</a>
-                    <a href="#" onclick="closeNav();return quickSearch('Rage Faces')">Rage Faces</a> 
-                </div>   
-            </p>
+        <!--Stash in head. It won't be visible anyway-->
+        <!--Clicking anywhere within the Overlay will cause it to become 'hidden' again. Easy!-->
+        <div id="guideOverlay" onclick="guideOff()">
+            <div id="guide">
+                <p>
+                    Note: Image load time varies by source <br>
+                </p>
+                <p>
+                    <u>On PC:</u>
+                    <ol>
+                        <li>Find memes using the search box. Set for images or GIFs in 'File Type'<br>
+                            <img src="./icons/guide/guide1.jpg" display=block margin-left="30%"  width="30%" height="12%"/>
+                        </li>
+                        <li>Click to copy link to meme<br>
+                            <img src="./icons/guide/guide2.jpg" width="40%" height="auto"/>
+                        </li>
+                        <li>
+                            Go back to the upload site. Click on the image upload button<br>
+                            <img src="./icons/guide/guide3.jpg" width="40%" height="auto"/>
+                        </li>
+                        <li>
+                            In the popup, Paste the copied link in 'File name'<br>
+                            <img src="./icons/guide/guide4.jpg" width="95%" height="auto"/>
+                        </li>
+                        <li>
+                            Finally, click open and wait. You have just posted a meme! <br>
+                            <img src="./icons/guide/guide5.gif" width="40%" height="auto"/>
+                        </li>
+                    </ol> 
+                </p>
+                <p>
+                    <u>On mobile:</u><br><br>
+                    Search as on PC. Press and hold a meme and click 'Save Image'. Upload.<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./icons/guide/guide6.png" width="40%" height="auto"/>
+                </p>
+            </div>
         </div>
     </div>
-</div>
-</div> <!--For row including #query and #sidebox-->
 
-<div class="row2">
-<div class="col-3">
-    <div id="paging1">
-        <div id="_paging1"></div>
+    
+    <div id="col-1" class="col-1" onclick="closeNav()">
+        <div id="myCategories" class="categories" onclick="closeNav()"> <!--Clicking anywhere within <div> closes sidebar-->
+            <button class="guideButton" onclick="guideOn()">Guide</button>
+            <a onclick="closeNav();return quickSearch('Reaction GIFs')">Reaction GIFs</a>             
+            <a onclick="closeNav();return quickSearch('Ragefaces')">Ragefaces</a>
+            <a onclick="closeNav();return quickSearch('Marvel & DC')">Marvel & DC</a>
+            <a onclick="closeNav();return quickSearch('Overwatch')">Overwatch</a>
+            <a onclick="closeNav();return quickSearch('Star Wars')">Star Wars</a>
+            <a onclick="closeNav();return quickSearch('Donald Trump')">Donald Trump</a>
+            <a onclick="closeNav();return quickSearch('Kim Jong-un')">Kim Jong-un</a>
+            <a onclick="closeNav();return quickSearch('Pepe the Frog')">Pepe the Frog</a>
+            <a onclick="closeNav();return quickSearch('Come At Me Bro')">Come At Me Bro</a>
+            <a onclick="closeNav();return quickSearch('Fabulous')">Fabulous</a>
+            <a onclick="closeNav();return quickSearch('Thumbs Up')">Thumbs Up</a>
+            <a onclick="closeNav();return quickSearch('WTF')">WTF</a>
+            <a onclick="closeNav();return quickSearch('LOL')">LOL</a>
+            <a onclick="closeNav();return quickSearch('OMG')">OMG</a>
+            <a onclick="closeNav();return quickSearch('I Don’t Care')">I Don’t Care</a>
+            <a onclick="closeNav();return quickSearch('Yes')">Yes</a>
+            <a onclick="closeNav();return quickSearch('Nope')">Nope</a>
+            <a onclick="closeNav();return quickSearch('Mind Blown')">Mind Blown</a>
+            <a onclick="closeNav();return quickSearch('Right In The Feels')">Right In The Feels</a>
+            <a onclick="closeNav();return quickSearch('Deal with it')">Deal with it</a>
+            <a onclick="closeNav();return quickSearch('Facepalm')">Facepalm</a>
+            <a onclick="closeNav();return quickSearch('Thank You')">Thank You</a>
+            <a onclick="closeNav();return quickSearch('You’re Awesome')">You’re Awesome!</a>
+            <a onclick="closeNav();return quickSearch('Haters Gonna Hate')">Haters Gonna Hate</a>
+            <a onclick="closeNav();return quickSearch('Party Hard')">Party Hard</a>
+            <a onclick="closeNav();return quickSearch('That’s Racist')">That’s Racist</a>
+            <a onclick="closeNav();return quickSearch('Fail')">Fail</a>
+            <a onclick="closeNav();return quickSearch('Birthday/Celebrate')">Celebrate</a>
+            <a onclick="closeNav();return quickSearch('Rage Faces')">Rage Faces</a><br>
+        </div>   
     </div>
+    
 
-    <div id="noresults">
-        <div id="_noresults"><i>Search results appear here</i></div>
+    <div class="col-2">
+        <!--onsubmit runs when the enter key is hit!-->
+        <form name="bing" onsubmit="return newBingImageSearch(this)">
+            <div id="query"><!-- query controls including search field and options -->               
+                <p> 
+                    <input
+                        type="text"
+                        name="query" id="term" class= "searchbox"
+                        placeholder="Search memes and GIFs"
+                        autoComplete="off"
+				    />
+				    <input type="submit" value="&#8981;" id="enterbutton" class="enterbutton" onclick="event.keyCode === 13"/>
+				
+                </p>
+                <p> 
+                    <select name="type" id="type">
+                        <option value="">IMG and GIFs</option>
+                        <option value="AnimatedGif">Only GIFs</option>
+                    </select>
+                    &nbsp;
+                    <select name="when" id="when">
+                        <option value="month">Past month</option>
+                        <option value="year">Past year</option>
+                        <option value="">All time</option>
+                    </select>
+                    &nbsp;
+                    <input type=checkbox id="safe" name="safe" value="on" checked><label for="safe">SafeSearch</label>
+                </p>
+                    
+                <!-- these hidden fields control paging -->
+                <input type=hidden name="count" value="20"> <!--Sets number of results per page-->
+                <!--Prevents duplicate results. See 'paging': https://docs.microsoft.com/en-us/azure/cognitive-services/bing-image-search/paging-images -->
+                <input type=hidden name="offset" value="0">
+                <input type=hidden name="nextoffset" value="">    
+                <input type=hidden name="stack" value="[]">
+            </div>
+        </form> <!--Sets up query URL for Bing search-->
+    
+        <div id="error">
+            <h2>Error</h2>
+            <div id="_error"></div>
+        </div>
     </div>
+    
+    </div> <!--For row including #query and #sidebox-->
+    
 
-    <div id="results">
-        <div id="_results"></div>
+    <div class="col-3">
+        <span id="navButton" class="navButton" onclick="openNav()">&#9776;</span>
+        <div id="paging1">
+            <div id="_paging1"></div>
+        </div>
+    
+        <div id="noresults">
+            <div id="_noresults"><i></i></div>
+        </div>
+    
+        <div id="results">
+            <div id="_results" class="container"></div>
+        </div>
+    
+    
+        <div id="paging2">
+            <div id="_paging2"></div>
+        </div>
+    
+        <div id="popup"><b>Link Copied!</b></div>
     </div>
-
-
-    <div id="paging2">
-        <div id="_paging2"></div>
+   
+    
+    <script>
+    /*
+    <div type=hidden id="json">
+        <h3><a href="#" onclick="return toggleDisplay('_json')">JSON</a></h3>
+        <div id="_json" style="display: none"></div>
     </div>
+    
+    <div type=hidden id="http">
+        <h3><a href="#" onclick="return toggleDisplay('_http')">HTTP</a></h3>
+        <div id="_http" style="display: none"></div>
+    </div>
+    */
+    </script>
 
-    <div id="popup"><b>Link Copied!</b></div>
-</div>
-</div>
-
-<script>
-/*
-<div type=hidden id="json">
-    <h3><a href="#" onclick="return toggleDisplay('_json')">JSON</a></h3>
-    <div id="_json" style="display: none"></div>
-</div>
-
-<div type=hidden id="http">
-    <h3><a href="#" onclick="return toggleDisplay('_http')">HTTP</a></h3>
-    <div id="_http" style="display: none"></div>
-</div>
-*/
-</script>
-
-</body>
+  </body>
 </html>

@@ -60,17 +60,23 @@ function srctoimg(id){
     var createSource = id.setAttribute('src', source);
 }
 
+
 //Opens and closes #guide
-function openGuide() {
-    document.getElementById("myGuide").style.width = "320px";
+function guideOn() {
+    document.getElementById("guideOverlay").style.display = "block";
 }
-function closeGuide() {
-    document.getElementById("myGuide").style.width = "0";
+function guideOff() {
+    document.getElementById("guideOverlay").style.display = "none";
 }
+
 //Opens and closes #mysidenav
 function openNav() {
-    document.getElementById("mySidenav").style.width = "300px";
+    document.getElementById("navButton").style.display = "none";
+    document.getElementById("col-1").style.display = "block";
 }
 function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
+    if (screen.width<769){
+        document.getElementById("navButton").style.display = "block";
+        document.getElementById("col-1").style.display = "none";
+    }
 }
