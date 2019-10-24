@@ -2,11 +2,11 @@
 Click to copy memes with Memefinder! Search for images with the search bar powered by the Bing Image Search API<br/>
 
 The site reactively scales by platform:
-**Mobile**
-![mobile function gif](memefinderMobile.gif)
+**Mobile**<br/>
+![mobile function gif](memefinderMobile.gif)<br/>
 
-**Desktop**
-![desktop function gif](memefinder.gif)
+**Desktop**<br/>
+![desktop function gif](memefinder.gif)<br/>
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
