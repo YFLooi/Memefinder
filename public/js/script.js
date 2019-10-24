@@ -40,7 +40,7 @@ try {
 function getSubscriptionKey() {
     var key = retrieveValue(API_KEY_COOKIE);
     while (key.length !== 32) {
-        key = "a510b937dbfb4e62841213b8966533ec";
+        key = "YOUR API KEY HERE";
         /* Default key acquisition code
         key=prompt("Enter Bing Search API subscription key:", "").trim();*/
     }
