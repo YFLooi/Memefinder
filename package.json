@@ -14,7 +14,7 @@
   },
   "author": "YF Looi",
   "dependencies": {
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "cors-proxy-server": "1.0.2"
   }
 }
